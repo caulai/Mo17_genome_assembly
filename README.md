@@ -1,3 +1,3 @@
 # Mo17_genome_assembly
 
-The custome codes in Mo17 paper
+The primary custom codes used in Mo17 genome assembly
