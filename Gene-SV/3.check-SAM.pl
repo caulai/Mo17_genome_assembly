@@ -1,12 +1,9 @@
 #!/usr/bin/perl -w
-#2017/4/22  yszhou
+#2017/4/22  
 
-$ref_genome=$ARGV[0];
-$cds_seq=$ARGV[1];
-#$ref_genome="/share/home/caulai/yszhou/data/Mo17-genome-v1-chr/Mo17_pseudo.full.fa";
-#$cds_seq="/share/home/caulai/yszhou/data/B73-genome-v4/full-cds-extend2000/B73-gene-full-cds-double.new.fa";
-#$ref_genome="/share/home/caulai/yszhou/data/Mo17-genome-v1-chr/Mo17_pseudo.full.fa";
-#$cds_seq="/share/home/caulai/yszhou/data/PH207/full-cds-extend2000/PH207-gene-full-cds-double.new.fa";
+$ref_genome=$ARGV[0];  # the second genome  (Mo17/B73)
+$cds_seq=$ARGV[1];     # "gene-full-cds-double.new.fa"
+
 ################################################################################################################
 open(FF,"$cds_seq");
 while($line=<FF>)
