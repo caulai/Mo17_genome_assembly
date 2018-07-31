@@ -1,8 +1,10 @@
 #!/usr/bin/perl -w
-#2017/4/18  yszhou
+#2017/4/18  
+$gff3=$ARGV[0];       # gff3 file of the first genome (B73/Mo17)
+$refgenome=$ARGV[1];  # the first genome (B73/Mo17)
 
-open(AA,"/share/home/caulai/yszhou/data/B73-genome-v4/merged-annotation/B73-merged-filtered.gff3");
-open(BB,">B73-cds.loc");
+open(AA,$gff3);
+open(BB,">cds.loc");
 while($line=<AA>)
 { chomp $line;
   $line=~s/ID=CDS://;  $line=~s/;/\t/; 
@@ -25,7 +27,7 @@ print BB "$chr\t$start\t$end\t$dir\t$pre\n";
 close AA; close BB;
 ###################################################################################################
 %hash=();  %lencht=();
-open(FF,"/share/home/caulai/yszhou/data/B73-genome-v4/maize_pseudo4-full.fa");
+open(FF,$refgenome);
 while($line=<FF>)
 { chomp $line;
   if($line=~/^>/)
@@ -36,8 +38,8 @@ while($line=<FF>)
 }
 close FF;
 
-open(CC,"B73-cds.loc");
-open(DD,">B73-gene-full-cds-2000.fa");
+open(CC,"cds.loc");
+open(DD,">gene-full-cds-2000.fa");
 while($line=<CC>)
 { chomp $line;
   @bb=split/\s+/,$line;
@@ -64,9 +66,7 @@ close CC; close DD;
 
 ##################################################################################################
 %start=();  %end=();  %dir=();
-$file1="/share/home/caulai/yszhou/data/B73-genome-v4/merged-annotation/B73-merged-filtered.gff3";  ##input: gff3 
-$file2="B73.gene.stucture";  ## output: gene simple  structure
-open(FF,"B73-cds.loc");
+open(FF,"cds.loc");
 while($line=<FF>)
 { chomp $line;
   @bb=split/\s+/,$line;
@@ -77,8 +77,8 @@ while($line=<FF>)
 close FF;
 ##############################
 $s=0;
-open(AA,"$file1");
-open(BB,">$file2");
+open(AA,$gff3);
+open(BB,">gene.stucture");
 while($line=<AA>)
 {  chomp $line;
    $line=~s/Parent=//;  $line=~s/ID=CDS\://;  $line=~s/ID=//;  $line=~s/;/\t/;  
@@ -112,7 +112,7 @@ print BB ">$pre\t$dir{$pre}\n",$total,"\n";
 close AA;  close BB;
 #######################################################################################
 %h1=();  %h2=();
-open(AA,"B73-gene-full-cds-2000.fa");
+open(AA,"gene-full-cds-2000.fa");
 while($line=<AA>)
 { chomp $line;
   if($line=~/^>/)
@@ -126,8 +126,8 @@ while($line=<AA>)
 close AA;
 
 $s=0;
-open(BB,"B73.gene.stucture");
-open(CC,">B73.gene.stucture.new");
+open(BB,"gene.stucture");
+open(CC,">gene.stucture.new");
 while($line=<BB>)
 { chomp $line;
   if($line=~/^>/)
@@ -151,8 +151,8 @@ print CC "UTL2\t$pre1\t$pre2\n";
 close BB; close CC;
 #######################################################################################
 %ge=(); %ge2=();
-open(AA,"B73-gene-full-cds-2000.fa");
-open(BB,">B73-gene-full-cds-double.fa");
+open(AA,"gene-full-cds-2000.fa");
+open(BB,">gene-full-cds-double.fa");
 while($line=<AA>)
 { chomp $line;
   if($line=~/^>/)
@@ -173,7 +173,7 @@ while($line=<AA>)
 close AA; close BB;
 ################################################################################
 %hash1=();  %hash2=();
-open(AA,"B73-gene-full-cds-double.fa");
+open(AA,"gene-full-cds-double.fa");
 while($line=<AA>)
 { chomp $line;
   if($line=~/^>/){$line=~s/>//; @bb=split/\s+/,$line;}
@@ -184,9 +184,9 @@ while($line=<AA>)
 }
 close AA;
 
-open(BB,"B73-cds.loc");
-open(CC,">B73-gene-full-cds-double.new.fa");
-open(DD,">B73-gene-full-cds-double.new.positive.fa");
+open(BB,"cds.loc");
+open(CC,">gene-full-cds-double.new.fa");
+open(DD,">gene-full-cds-double.new.positive.fa");
 while($line=<BB>)
 {
   chomp $line;
