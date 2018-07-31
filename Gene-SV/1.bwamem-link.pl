@@ -1,11 +1,11 @@
 #!/usr/bin/perl -w
-#2017/4/20  yszhou
+#2017/4/20  
 
-$gene_structure=$ARGV[0];  #"B73.gene.stucture.new";
-$ref_genome=$ARGV[1];      #"Mo17_pseudo.full.fa";
-$cds_seq=$ARGV[2]:         #"B73-gene-full-cds-double.new.fa";
-$cds_loc=$ARGV[3];         #"B73-cds.loc";
-$script_dir=$ARGV[4];      #"/share/home/caulai/yszhou/work2017/variation_script";
+$gene_structure=$ARGV[0];  #"gene.stucture.new";
+$ref_genome=$ARGV[1];      # the second genome  (Mo17/B73)
+$cds_seq=$ARGV[2]:         #"gene-full-cds-double.new.fa";
+$cds_loc=$ARGV[3];         #"cds.loc" 
+$script_dir=$ARGV[4];      
 
 `bwa mem -t 1  $ref_genome   gene.fa > aln.sam `;
 ###################
