@@ -7,7 +7,7 @@ $cds_seq=$ARGV[2]:         #"gene-full-cds-double.new.fa";
 $cds_loc=$ARGV[3];         #"cds.loc" 
 $script_dir=$ARGV[4];      
 
-`bwa mem -t 1  $ref_genome   gene.fa > aln.sam `;
+`bwa mem -t 1  $ref_genome   gene.fa > aln.sam `; # 'gene.fa' can be splited from 'gene-full-cds-double.new.positive.fa'
 ###################
 open(AA,"$ref_genome");
 while($line1=<AA>)
