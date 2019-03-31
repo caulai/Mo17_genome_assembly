@@ -62,7 +62,7 @@ close BB; close CC;
 
 ################################################################################################ Link the sequence
 open(AA,"temp.stucture.utl-exon-intron");
-open(BB,">temp.stucture.utl-exon-intron.linked.new");
+open(BB,">temp.stucture.exon-intron.new");
 $s=0;
 while($line=<AA>)
 {  
