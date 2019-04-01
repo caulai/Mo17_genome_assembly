@@ -68,7 +68,7 @@ while($line=<AA>)
 {  
   if($line=~/^>/)
     {if($s>0)
-    {print BB $head,$s1,"\n".$s2,"\n",$s3,"\n",$s4,"\n";}
+    {print BB $head,$s1,"\n".$s2,"\n",$s3,"\n",$s4,"\n",$s4,"\n";}
 	$head=$line;
 	$s1=""; $s2=""; $s3=""; $s4="";
     }
@@ -128,7 +128,7 @@ while($line=<AA>)
 	}
 	 $s=1;
 }
-print BB $head,$s1,"\n".$s2,"\n",$s3,"\n",$s4,"\n";
+print BB $head,$s1,"\n".$s2,"\n",$s3,"\n",$s4,"\n",$s4,"\n";
 close AA; close BB;
 ################################################################################################ Find ATG
 open(AA,"temp.stucture.exon-intron.new");
