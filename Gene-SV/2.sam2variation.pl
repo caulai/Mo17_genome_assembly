@@ -1,12 +1,9 @@
 #!/usr/bin/perl -w
 #2017/4/20  yszhou
 
-open(AA,"scaffold.fa");
-$line1=<AA>;  
-chomp $line1; $line1=~s/>//;  $chr=$line1; $len=length($line1);  $temp=" "x(30-$len);  $scaffoldname="$line1$temp";
-$line2=<AA>;  
-$ss2=$line2;  chomp $ss2;  
-close AA;
+($line1,$line2)=($ARGV[0],$ARGV[1]);
+$chr=$line1; $len=length($line1);  $temp=" "x(30-$len);  $scaffoldname="$line1$temp";
+$ss2=$line2; 
 
 ####################
 $find=0;  $good="";
