@@ -94,8 +94,9 @@ close AA;
 close BB;
 open(A1,">gene1.fa");  print A1 ">$pregene\n",$ge{$pregene},"\n";   close A1;
 open(A2,">gene2.fa");  print A2 ">$pregene\n",$ge2{$pregene},"\n";  close A2;
-open(A3,">scaffold.fa");  print A3 ">$prescaffold\n",$hash{$prescaffold},"\n";  close A3;
-`perl $script_dir/2.sam2variation.pl  `;
+#open(A3,">scaffold.fa");  print A3 ">$prescaffold\n",$hash{$prescaffold},"\n";  close A3;
+#`perl $script_dir/2.sam2variation.pl  `;
+`perl  $script_dir/2.sam2variation.pl   $prescaffold  $hash{$prescaffold}`;
 `cat bwasw.out.line >> bwasw.out`;
 `rm temp*`;
 ##################################################
