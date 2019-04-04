@@ -43,10 +43,11 @@ open(F4,">$filein.class2.Splice_donor_mutation");
 open(F5,">$filein.class2.Splice_acceptor_mutation");
 open(F6,">$filein.class2.Premature_stop_codon");
 open(F7,">$filein.class1.Without_amino_acid_substitutions");
-open(F8,">$filein.class1.With_missence_mutation_in_CDS");
+open(F8,">$filein.class1.With_amino_acid_changes");
 open(F9,">$filein.class2_Gene_with_Large_effect_mutations");
 open(F10,">$filein.class1.No_DNA_variation_in_genetic_region");
 open(F11,">$filein.class1.No_DNA_variation_in_CDS_intron_region");
+open(F12,">$filein.class1.Structurally_conserved_genes");
 ###########################################################################################################
 while($s1=<AA>)
 {  $s2=<AA>;  $ll2=$s2;  chomp $ll2; @b2=split//,$ll2;   #seq1
@@ -125,14 +126,15 @@ while($s1=<AA>)
 	if($Findel==0 && $FATG==0 && $Fstop==0 && $Fdonor==0 && $Facceptor==0 && $Fpremature==0)
 	{ if($s7 eq $s8){print F7  $s1,$s2,$s3,$s4,$s5,$s6,$s7,$s8;}
 	  else{print F8  $s1,$s2,$s3,$s4,$s5,$s6,$s7,$s8;}
+           print F12   $s1,$s2,$s3,$s4,$s5,$s6,$s7,$s8;
 	}
 	else{print F9  $s1,$s2,$s3,$s4,$s5,$s6,$s7,$s8;}
 	if($s2 eq $s3){print F10  $s1,$s2,$s3,$s4,$s5,$s6,$s7,$s8;}
 	if($cdsintron1 eq $cdsintron2){print F11  $s1,$s2,$s3,$s4,$s5,$s6,$s7,$s8;}
 } 
-close AA; close F1; close F2; close F3; close F4; close F5; close F6; close F7; close F8; close F9; close F10; close F11;
+close AA; close F1; close F2; close F3; close F4; close F5; close F6; close F7; close F8; close F9; close F10; close F11;  close F12;
 ###############################################################################################################
-open(AA,"$filein.class1.With_missence_mutation_in_CDS");
+open(AA,"$filein.class1.Without_amino_acid_substitutions");
 open(BB,">$filein.class1.No_DNA_variation_in_CDS_region");
 while($s1=<AA>)
 {  $s2=<AA>;  $ll2=$s2;  chomp $ll2; @b2=split//,$ll2;   #seq1
@@ -174,3 +176,32 @@ while($s1=<AA>)
    if($find==0){print BB $s1,$s2,$s3,$s4,$s5,$s6,$s7,$s8;}
 }
 close AA; close BB;
+
+###############################################################
+open(AA,"$filein.class1.With_amino_acid_changes");
+open(BB,">$filein.class1.With_3n_indel_in_CDS");
+open(CC,">$filein.class1.With_missence_mutation_in_CDS");
+while($s1=<AA>)
+{  $s2=<AA>;  $ll2=$s2;  chomp $ll2; @b2=split//,$ll2;   #seq1
+   $s3=<AA>;  $ll3=$s3;  chomp $ll3; @b3=split//,$ll3;   #seq2
+   $s4=<AA>;
+   $s5=<AA>;  $ll5=$s5;  chomp $ll5; @b5=split//,$ll5;   #structure
+   $s6=<AA>;
+   $s7=<AA>;  $ll7=$s7;  chomp $ll7; @b7=split//,$ll7;   #protein1
+   $s8=<AA>;  $ll8=$s8;  chomp $ll8; @b8=split//,$ll8;   #protein2
+   $len=@b7;
+   $i=0; $ss1=""; $ss2="";
+   $indel=0; $mis=0;
+   while($i<$len)
+   { if($b5[$i] eq "E"){
+     if($b7[$i] eq "_" && $b8[$i] ne "_"){$indel=1;}
+     if($b7[$i] ne "_" && $b8[$i] eq "_"){$indel=1;}
+     if($b7[$i] ne "_" && $b8[$i] ne "_" && $b7[$i] ne $b8[$i]){$mis=1;}
+     }
+    $i++;
+   }
+   if($indel>0){print BB $s1,$s2,$s3,$s4,$s5,$s6,$s7,$s8;}
+   if($mis>0){print CC $s1,$s2,$s3,$s4,$s5,$s6,$s7,$s8;}
+}
+
+close AA; close BB;  close CC;
