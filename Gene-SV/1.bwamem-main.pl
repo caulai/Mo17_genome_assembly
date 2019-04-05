@@ -112,7 +112,7 @@ open(A2,">gene2.fa");  print A2 ">$pregene\n",$ge2{$pregene},"\n";  close A2;
 sub  sam2variation{
    
   my ($line1,$line2,$chr,$len,$temp,$scaffoldname,$s,$ss1,$ss2,$find,$good,$file,$line,$ll,$i,$dir,$dir16,$match,$insertion,$deletion,$start1,$start2,$end1,$end2,$dir0,,$drection,$tt,$preline,$prelen,$seq1,$seq2,$small,$small2,$big,$big2);
-  my ($string1,$string2,$indel1,$indel2,$new1,$new2,$addgene1,$addgene2,$sum1,$sum2,$addgene11,$addgene22,$len_temparr,$ii,$cc,$genename);
+  my ($string1,$string2,$indel1,$indel2,$temp1,$temp2,$new1,$new2,$addgene1,$addgene2,$sum1,$sum2,$addgene11,$addgene22,$len_temparr,$ii,$cc,$genename);
   my (@bb,@arr,@str1,@str2,@temparr,@a1,@a2);
    ($line1,$line2)=@_;
    $chr=$line1;  $len=length($line1);   $temp=" "x(30-$len);   $scaffoldname="$line1$temp";
