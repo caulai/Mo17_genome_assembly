@@ -5,12 +5,14 @@ $refgenome=$ARGV[1];  # the first genome (B73/Mo17)
 
 open(AA,$gff3);
 open(BB,">cds.loc");
+open(CC,">cds.temp.loc");
+$pre="";  $s=0;
 while($line=<AA>)
 { chomp $line;
-  $line=~s/ID=CDS://;  $line=~s/;/\t/; 
+  $line=~s/Parent=//;  $line=~s/ID=CDS\://;  $line=~s/ID=//;  $line=~s/;/\t/;  
   @bb=split/\s+/,$line;
   if($bb[2] eq "CDS")
-  {
+  { print CC "$bb[0]\t$bb[1]\t$bb[2]\t$bb[3]\t$bb[4]\t$bb[5]\t$bb[6]\t$bb[7]\t$bb[8]\n";
     if($pre ne $bb[8])
 	  {
 	    if($s>0){print BB "$chr\t$start\t$end\t$dir\t$pre\n";}
@@ -24,9 +26,10 @@ while($line=<AA>)
   }
 }
 print BB "$chr\t$start\t$end\t$dir\t$pre\n";
-close AA; close BB;
+close AA; close BB; close CC;
+`sort  -dk1,1 -k9,9  -k4,4n cds.temp.loc  >  cds.temp.loc.sorted `;
 ###################################################################################################
-%hash=();  %lencht=();
+%hash=();  %lenchr=();
 open(FF,$refgenome);
 while($line=<FF>)
 { chomp $line;
@@ -77,7 +80,7 @@ while($line=<FF>)
 close FF;
 ##############################
 $s=0;
-open(AA,$gff3);
+open(AA,"cds.temp.loc.sorted");
 open(BB,">gene.stucture");
 while($line=<AA>)
 {  chomp $line;
@@ -86,24 +89,25 @@ while($line=<AA>)
    ###########################
    if($bb[2] eq "CDS")
    {  if($pre ne $bb[8])
-       {  if($s>0){print BB ">$pre\t$dir{$pre}\n",$total,"\n";}
-          if($bb[6] eq "+")
-		  { $t1=$bb[3]-$start{$bb[8]}+1; $t2=$bb[4]-$start{$bb[8]}+1;}
-		  else{$t1=$end{$bb[8]}-$bb[4]+1;  $t2=$end{$bb[8]}-$bb[3]+1;}
-		  $total="EXON\t$t1\t$t2";
-		  $s++;
+          {  if($s>0){print BB ">$pre\t$dir{$pre}\n",$total,"\n";}
+                if($bb[6] eq "+")
+		    { $t1=$bb[3]-$start{$bb[8]}+1; $t2=$bb[4]-$start{$bb[8]}+1;}
+		    else{$t1=$end{$bb[8]}-$bb[4]+1;  $t2=$end{$bb[8]}-$bb[3]+1;}
+		    $total="EXON\t$t1\t$t2";
+		    $s++;
 	   }
-	   else{   if($bb[6] eq "+"){
-	                $t3=$bb[3]-$start{$bb[8]}+1; $t4=$bb[4]-$start{$bb[8]}+1;
-	                $intron1=$t2+1; $intron2=$t3-1;
-					$total="$total\nINTRON\t$intron1\t$intron2\nEXON\t$t3\t$t4";
-					}
-				else{
-				   $t3=$end{$bb[8]}-$bb[4]+1;  $t4=$end{$bb[8]}-$bb[3]+1;
-				   $intron1=$t4+1; $intron2=$t1-1;
-				   $total="EXON\t$t3\t$t4\nINTRON\t$intron1\t$intron2\n$total";
-				}
-					$t1=$t3; $t2=$t4;	
+	   else{   if($bb[6] eq "+")
+                        {
+	                  $t3=$bb[3]-$start{$bb[8]}+1; $t4=$bb[4]-$start{$bb[8]}+1;
+	                  $intron1=$t2+1; $intron2=$t3-1;
+			  $total="$total\nINTRON\t$intron1\t$intron2\nEXON\t$t3\t$t4";
+		        }
+			else{
+			    $t3=$end{$bb[8]}-$bb[4]+1;  $t4=$end{$bb[8]}-$bb[3]+1;
+			    $intron1=$t4+1; $intron2=$t1-1;
+			    $total="EXON\t$t3\t$t4\nINTRON\t$intron1\t$intron2\n$total";
+			  }
+		  $t1=$t3; $t2=$t4;	
 	       }
 		$pre=$bb[8]; 
 	}
@@ -111,7 +115,7 @@ while($line=<AA>)
 print BB ">$pre\t$dir{$pre}\n",$total,"\n";
 close AA;  close BB;
 #######################################################################################
-%h1=();  %h2=();
+%n1=();  %n2=();
 open(AA,"gene-full-cds-2000.fa");
 while($line=<AA>)
 { chomp $line;
@@ -205,3 +209,5 @@ while($line=<BB>)
   }
 }
 close BB; close CC; close DD;
+
+`rm  cds.temp.loc`;
