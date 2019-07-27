@@ -10,15 +10,21 @@ $script_dir=$ARGV[4];
   
 `bwa mem -t 1  $ref_genome  gene.fa | samtools view  > aln.sam `; # 'gene.fa' can be splited from 'gene-full-cds-double.new.positive.fa'
 ###################
-open(AA,"$ref_genome");
-while($line1=<AA>)
-{ $line2=<AA>;  
-  chomp $line1;  
-  chomp $line2;
-  $line1=~s/>//;
-  @bb=split/\s+/,$line1;  
-  $hash{$bb[0]}=$line2;
-}close AA;
+%hash=();
+open(FASTA,$ref_genome);
+$s=0;
+while($line=<FASTA>)
+{  chomp $line;
+  if($line=~/^>/)
+   { if($s>0){ $hash{$chr}=$seq;  }
+      $s=1;
+      $seq="";  @bb=split/\s+/,$line;  $chr=$bb[0]; $chr=~s/>//;
+   }
+    else{$line=~s/\r//g;  $seq="$seq$line";}
+ }
+ $hash{$chr}=$seq;
+close FASTA; 
+
 
 open(AA,"gene.fa");
 while($line=<AA>)
