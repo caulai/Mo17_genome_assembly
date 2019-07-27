@@ -3,7 +3,7 @@
 
 $gene_structure=$ARGV[0];  #"gene.stucture.new";
 $ref_genome=$ARGV[1];      # the second genome  (Mo17/B73)
-$cds_seq=$ARGV[2]:         #"gene-full-cds-double.new.fa";
+$cds_seq=$ARGV[2];         #"gene-full-cds-double.new.fa";
 $cds_loc=$ARGV[3];         #"cds.loc" 
 $script_dir=$ARGV[4];  
 
@@ -94,16 +94,16 @@ while($Lines=<A>)
 }
 close A; 
 close B;
-open(A1,">gene1.fa");  print A1 ">$pregene\n",$ge{$pregene},"\n";   close A1;
-open(A2,">gene2.fa");  print A2 ">$pregene\n",$ge2{$pregene},"\n";  close A2;
+open(A1,">gene1.fa");  print A1 ">$pregener\n",$ge{$pregener},"\n";   close A1;
+open(A2,">gene2.fa");  print A2 ">$pregener\n",$ge2{$pregener},"\n";  close A2;
 #open(A3,">scaffold.fa");  print A3 ">$prescaffold\n",$hash{$prescaffold},"\n";  close A3;
 #`perl $script_dir/2.sam2variation.pl  `;
 &sam2variation($prescaffoldr,$hash{$prescaffoldr});
 `cat bwasw.out.line >> bwasw.out`;
 `rm temp*`;
 ##################################################
-`perl $script_dir/3.check-sequence.pl  $ref_genome    $cds_seq `;
-`perl $script_dir/4.clustalw-utl-exon-intron.pl   clustalw.out.checked.filtered  $gene_structure `;
+`perl $script_dir/3.check-SAM.pl  $ref_genome    $cds_seq `;
+`perl $script_dir/4.bwa2gene_structure.pl   clustalw.out.checked.filtered  $gene_structure `;
 `perl $script_dir/5.Gene_SV_classify.pl    clustalw.out.checked.filtered.structure  `;
 
 #########################################  sam2variation
