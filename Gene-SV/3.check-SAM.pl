@@ -94,14 +94,14 @@ while($s1=<AA>)
 {  chomp $s1;  @b=split/\s+/,$s1;
    $s2=<AA>; chomp $s2;  @b2=split//,$s2; $len=@b2;
    $s3=<AA>; chomp $s3;  @b3=split//,$s2;
-   $s4=<AA>; chomp $s4;  @b4=split//,$s2;
+   $s4=<AA>; chomp $s4;  #@b4=split//,$s2;
    $i=30; $j=0;
    while($i<$len)
    { if($b2[$i] ne "-"){$j++;}
      if($j==2000){$gstart=$i;}
 	 $i++;
    }
-   $i=$len; $j=0;
+   $i=$len-1; $j=0;
    while($i>30)
    { if($b2[$i] ne "-"){$j++;}
      if($j==2000){$gend=$i;}
