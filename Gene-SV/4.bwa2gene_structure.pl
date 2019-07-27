@@ -3,7 +3,7 @@
 
 $bwain=$ARGV[0];  #"clustalw.out.checked.filtered";
 $gene_structure=$ARGV[1];     #"gene.stucture.new";
-$bwaout="$bwain.structure";   #"clustalw.out.checked.filtere.structure";
+$bwaout="$bwain.structure";   #"clustalw.out.checked.filtered.structure";
 
 open(AA,$bwain);
 while($s1=<AA>)
@@ -61,14 +61,14 @@ while($line=<BB>)
 close BB; close CC;
 
 ################################################################################################ Link the sequence
-open(AA,"temp.stucture.utl-exon-intron");
-open(BB,">temp.stucture.exon-intron.new");
+open(AA2,"temp.stucture.utl-exon-intron");
+open(BB2,">temp.stucture.exon-intron.new");
 $s=0;
-while($line=<AA>)
+while($line=<AA2>)
 {  
   if($line=~/^>/)
     {if($s>0)
-    {print BB $head,$s1,"\n".$s2,"\n",$s3,"\n",$s4,"\n",$s4,"\n";}
+    {print BB2 $head,$s1,"\n".$s2,"\n",$s3,"\n",$s4,"\n",$s4,"\n";}
 	$head=$line;
 	$s1=""; $s2=""; $s3=""; $s4="";
     }
@@ -76,8 +76,8 @@ while($line=<AA>)
   if($line=~/^EXON/)
       {
 	                chomp $line;  @b1=split//,$line;   
-	  $line2=<AA>;  chomp $line2; @b2=split//,$line2;  
-	  $line3=<AA>;  chomp $line3; @b3=split//,$line3;  
+	  $line2=<AA2>;  chomp $line2; @b2=split//,$line2;  
+	  $line3=<AA2>;  chomp $line3; @b3=split//,$line3;  
 	  $len=@b1;
 	  $i=30;  
 	  while($i<$len)
@@ -94,8 +94,8 @@ while($line=<AA>)
 	  if($line=~/^INTRON/)
       {
 	                chomp $line;  @b1=split//,$line;   
-	  $line2=<AA>;  chomp $line2; @b2=split//,$line2;  
-	  $line3=<AA>;  chomp $line3; @b3=split//,$line3;  
+	  $line2=<AA2>;  chomp $line2; @b2=split//,$line2;  
+	  $line3=<AA2>;  chomp $line3; @b3=split//,$line3;  
 	  $len=@b1;
 	  $i=30;  print $len,"\n";
 	  while($i<$len)
@@ -112,8 +112,8 @@ while($line=<AA>)
 	 if($line=~/^UTL/)
       {
 	                chomp $line;  @b1=split//,$line;   
-	  $line2=<AA>;  chomp $line2; @b2=split//,$line2;  
-	  $line3=<AA>;  chomp $line3; @b3=split//,$line3;  
+	  $line2=<AA2>;  chomp $line2; @b2=split//,$line2;  
+	  $line3=<AA2>;  chomp $line3; @b3=split//,$line3;  
 	  $len=@b1;
 	  $i=30;
 	  while($i<$len)
@@ -128,19 +128,19 @@ while($line=<AA>)
 	}
 	 $s=1;
 }
-print BB $head,$s1,"\n".$s2,"\n",$s3,"\n",$s4,"\n",$s4,"\n";
-close AA; close BB;
+print BB2 $head,$s1,"\n".$s2,"\n",$s3,"\n",$s4,"\n",$s4,"\n";
+close AA2; close BB2;
 ################################################################################################ Find ATG
-open(AA,"temp.stucture.exon-intron.new");
-open(BB,">temp.stucture.exon-intron.new.ATG");
-while($s1=<AA>)
+open(AA3,"temp.stucture.exon-intron.new");
+open(BB3,">temp.stucture.exon-intron.new.ATG");
+while($s1=<AA3>)
 {  
-   $s2=<AA>;  $s3=<AA>; $s4=<AA>;  $s5=<AA>;  $s6=<AA>;
+   $s2=<AA3>;  $s3=<AA3>; $s4=<AA3>;  $s5=<AA3>;  $s6=<AA3>;  
    
       $ll2=$s2; chomp $ll2;  @b2=split//,$ll2; $len=length($ll2);
-	  $ll3=$s3; chomp $ll3;  @b3=split//,$ll3;
-	  $ll5=$s5; chomp $ll5;  @b5=split//,$ll5;
-	  $ll6=$s6; chomp $ll6;  @b6=split//,$ll6;
+      $ll3=$s3; chomp $ll3;  @b3=split//,$ll3;
+      $ll5=$s5; chomp $ll5;  @b5=split//,$ll5;
+      $ll6=$s6; chomp $ll6;  @b6=split//,$ll6;
       $i=0; 
 	  while($b6[$i] ne "E" && $b6[$i] ne "F" ){$i++;}
       $j=$len-1;
@@ -166,7 +166,7 @@ while($s1=<AA>)
 		  {$s7=""; $d="U"; $d2="E";  $i3=0; 
 		  while($i3<=$i2){$s7="$s7$d";  $i3++;}
 		  while($i3<=$i) {$s7="$s7$d2"; $i3++;}
-		  while($i3<=$len){$s7="$s7$b6[$i3]";  $i3++; }
+		  while($i3<$len){$s7="$s7$b6[$i3]";  $i3++; }
 		  chomp $s7; $s7="$s7\n";
 		  #print BB $s1,$s2,$s3,$s4,$s5,$s6,$s7;
 		  }   ######################### extend 300+100bp
@@ -191,15 +191,15 @@ while($s1=<AA>)
 	     }
 	   }
 	   else{$s7=$s6;}
-	print BB $s1,$s2,$s3,$s4,$s5,$s6,$s7;
+	print BB3 $s1,$s2,$s3,$s4,$s5,$s6,$s7;
 }
-close AA; close BB
+close AA3; close BB3;
 ################################################################################################ Find Stop Codon
-open(AA,"temp.stucture.exon-intron.new.ATG");
-open(BB,">temp.stucture.exon-intron.new.ATG.TAA"); 
-while($s1=<AA>)
+open(AA4,"temp.stucture.exon-intron.new.ATG");
+open(BB4,">temp.stucture.exon-intron.new.ATG.TAA"); 
+while($s1=<AA4>)
 {  
-   $s2=<AA>;  $s3=<AA>; $s4=<AA>;  $s5=<AA>; $s6=<AA>; $s7=<AA>;
+   $s2=<AA4>;  $s3=<AA4>;  $s4=<AA4>;  $s5=<AA4>;  $s6=<AA4>;  $s7=<AA4>;
    
       $ll2=$s2; chomp $ll2;  @b2=split//,$ll2; $len=length($ll2);
 	  $ll3=$s3; chomp $ll3;  @b3=split//,$ll3;
@@ -248,10 +248,11 @@ while($s1=<AA>)
 	  while($ii2<$len)
 	  {$s8="$s8$b7[$ii2]"; $ii2++;}
 	  chomp $s8; $s8="$s8\n";
-	  print BB $s1,$s2,$s3,$s4,$s5,$s8;
+	  print BB4 $s1,$s2,$s3,$s4,$s5,$s8;
 	  }
 }
-close AA; close BB;
+close AA4; close BB4;
+
 #######################################################################################  bwa2gene_structure-protein
 $h{"TTT"}="F";  $h{"TTC"}="F";  $h{"TTA"}="L";  $h{"TTG"}="L";
 $h{"TCT"}="S";  $h{"TCC"}="S";  $h{"TCA"}="S";  $h{"TCG"}="S";
@@ -273,14 +274,15 @@ $h{"GCT"}="A";  $h{"GCC"}="A";  $h{"GCA"}="A";  $h{"GCG"}="A";
 $h{"GAT"}="D";  $h{"GAC"}="D";  $h{"GAA"}="E";  $h{"GAG"}="E";
 $h{"GGT"}="G";  $h{"GGC"}="G";  $h{"GGA"}="G";  $h{"GGG"}="G";
 #########################################
-open(AA,"temp.stucture.utl-exon-intron.ATG.TAA");
-open(BB,">temp.stucture.utl-exon-intron.ATG.TAA.protein");
-while($s1=<AA>)
-{  $s2=<AA>;
-   $s3=<AA>;
-   $s4=<AA>;
-   $s5=<AA>;
-   $s6=<AA>;
+
+open(AA5,"temp.stucture.exon-intron.new.ATG.TAA");
+open(BB5,">temp.stucture.exon-intron.new.ATG.TAA.protein");
+while($s1=<AA5>)
+{  $s2=<AA5>;
+   $s3=<AA5>;
+   $s4=<AA5>;
+   $s5=<AA5>;
+   $s6=<AA5>;
    ####
    $ll2=$s2; chomp $ll2;  @b2=split//,$ll2;  $len=@b2; $pre2=""; $pre1="";
    $ll5=$s5; chomp $ll5;  @b5=split//,$ll5;
@@ -293,9 +295,9 @@ while($s1=<AA>)
       {$t++;
 	  if($t<3){$pre2=$pre1; $pre1=$b2[$i]; $seq2="$seq2\_";}
         else{$temp="$pre2$pre1$b2[$i]"; 
-		    $seq2="$seq2$h{$temp}";
-			if($h{$temp} eq "*"){$stop=1;}
-			$pre2=$pre1; $pre1=$b2[$i];
+		$seq2="$seq2$h{$temp}";
+		if($h{$temp} eq "*"){$stop=1;}
+		$pre2=$pre1; $pre1=$b2[$i];
 	        $t=0;
 			}
 	   }
@@ -325,12 +327,10 @@ while($s1=<AA>)
 	  else{$seq3="$seq3 "}
 	  $i++;
    }
-     print BB $s1,$s2,$s3,$s4,$s5,$s6,$seq2,"\n",$seq3,"\n";
+     print BB5 $s1,$s2,$s3,$s4,$s5,$s6,$seq2,"\n",$seq3,"\n";
  }
- close AA; close BB;
- ##################################
-`rm  temp.stucture.exon-intron`;  
-`rm  temp.stucture.exon-intron.new`;
-`rm  temp.stucture.exon-intron.new.ATG`;
-`rm  temp.stucture.exon-intron.new.ATG.TAA`;
-`mv temp.stucture.utl-exon-intron.ATG.TAA.protein $bwaout`;
+ close AA5; close BB5;
+
+##################################
+`mv  temp.stucture.exon-intron.new.ATG.TAA.protein $bwaout`;
+`rm  temp.stucture.exon-intron*`;  
