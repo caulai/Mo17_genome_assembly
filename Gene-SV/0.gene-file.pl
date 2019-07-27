@@ -30,16 +30,19 @@ close AA; close BB; close CC;
 `sort  -dk1,1 -k9,9  -k4,4n cds.temp.loc  >  cds.temp.loc.sorted `;
 ###################################################################################################
 %hash=();  %lenchr=();
-open(FF,$refgenome);
-while($line=<FF>)
-{ chomp $line;
-  if($line=~/^>/)
-  { @bb=split/\s+/,$line;  $chr=$bb[0]; $chr=~s/>//;}
-  else{$hash{$chr}=$line;
-  $lenchr{$chr}=length($line);
-  }
+open(FASTA,$refgenome);
+$s=0;
+while($line=<FASTA>)
+{  chomp $line;
+   if($line=~/^>/)
+   { if($s>0){ $hash{$chr}=$seq;  $lenchr{$chr}=length($seq); }
+      $s=1;
+      $seq="";  @bb=split/\s+/,$line;  $chr=$bb[0]; $chr=~s/>//;
+   }
+    else{$line=~s/\r//g;  $seq="$seq$line";}
 }
-close FF;
+$hash{$chr}=$seq;
+close FASTA; 
 
 open(CC,"cds.loc");
 open(DD,">gene-full-cds-2000.fa");
